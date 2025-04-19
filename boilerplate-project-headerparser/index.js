@@ -19,6 +19,21 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
+// jawaban
+app.get('/api/whoami', function (req, res) {
+  let ip = req.headers['x-forwarded-for']?.split(',').shift()||req.socket?.remoteAddress
+
+  if (ip.startsWith('::ffff:')) {
+
+    ip = ip.substring(7); // Remove the "::ffff:" prefix
+
+  }
+
+  const language = req.headers['accept-language']
+  const software = req.headers['user-agent']
+  res.json({ipaddress: ip, language: language, software: software})
+});
+
 // your first API endpoint...
 app.get('/api/hello', function (req, res) {
   res.json({ greeting: 'hello API' });
